@@ -18,8 +18,9 @@ public class Main {
         DAOfactura daoF = new DAOfactura();
         DAOproducto daoP = new DAOproducto();
         DAOfactura_producto daoFP = new DAOfactura_producto();
-        //Convert.createTables();
 
+        //Convert.createTables();
+        /*
         ArrayList<Factura> facturas = new ArrayList();
         ArrayList<Producto> prod = new ArrayList<>();
         ArrayList<FacturaProducto> fp = new ArrayList<>();

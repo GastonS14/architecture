@@ -34,4 +34,12 @@ public class Producto {
     public void setIdProducto(int idProducto) {
         this.idProducto = idProducto;
     }
+
+    @Override
+    public String toString() {
+        return "Producto " +
+                "nombre='" + nombre + '\'' +
+                ", valor=" + valor +
+                ", idProducto=" + idProducto;
+    }
 }
