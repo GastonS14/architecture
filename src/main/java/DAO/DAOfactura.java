@@ -26,4 +26,5 @@ public class DAOfactura {
         con.commit();
         con.close();
     }
+
 }

@@ -1,9 +1,11 @@
 package DATA;
 
+import DAO.DAOcliente;
 import DAO.DAOfactura;
 import DAO.DAOfactura_producto;
 import DAO.DAOproducto;
 import DataBase.Convert;
+import Entity.Cliente;
 import Entity.Factura;
 import Entity.FacturaProducto;
 import Entity.Producto;
@@ -18,13 +20,20 @@ public class Main {
         DAOfactura daoF = new DAOfactura();
         DAOproducto daoP = new DAOproducto();
         DAOfactura_producto daoFP = new DAOfactura_producto();
-
-        //Convert.createTables();
+        ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+        DAOcliente daoC = new DAOcliente();
         /*
+        Convert.createTables();
+
         ArrayList<Factura> facturas = new ArrayList();
         ArrayList<Producto> prod = new ArrayList<>();
         ArrayList<FacturaProducto> fp = new ArrayList<>();
-        /*
+
+        clientes.addAll(c.createClientes("C:\\Users\\Usuario\\Documents\\IntelliJProjects\\IntegradorPractico1\\src\\main\\java\\DATA\\clientes.csv") );
+        for ( Cliente cli: clientes ) {
+            daoC.insert( cli );
+        }
+
         facturas.addAll( c.createFacturas("C:\\Users\\Usuario\\Documents\\IntelliJProjects\\IntegradorPractico1\\src\\main\\java\\DATA\\facturas.csv"));
         for ( Factura f: facturas ) {
             daoF.insert(f);
@@ -39,8 +48,8 @@ public class Main {
         for ( FacturaProducto fp1: fp ) {
             daoFP.insert( fp1 );
         }
-
-         */
+        */
+        System.out.println( daoC.getClienteInOrder() );
     }
 
 }

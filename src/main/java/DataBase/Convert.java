@@ -47,8 +47,8 @@ public class Convert {
         ArrayList<Cliente> retorno = new ArrayList();
         CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new FileReader(path));
         for (CSVRecord row : parser) {
-            int idProducto = Integer.parseInt(row.get("idProducto"));
-            Cliente c = new Cliente(idProducto, row.get("nombre"), row.get("email"));
+            int idCliente = Integer.parseInt(row.get("idCliente"));
+            Cliente c = new Cliente(idCliente, row.get("nombre"), row.get("email"));
             retorno.add( c );
         }
         return retorno;
@@ -80,9 +80,14 @@ public class Convert {
     }
 
     public static void createTables () throws SQLException {
+        String query0 = "CREATE TABLE Cliente (" +
+                            "idCliente INT PRIMARY KEY," +
+                              "nombre varchar(500)," +
+                                "email varchar(150) ) ";
         String query = " CREATE TABLE Factura (" +
                 "idFactura INT PRIMARY KEY," +
-                "idCliente INT )";
+                "idCliente INT, " +
+                "FOREIGN KEY (idCliente) REFERENCES Cliente(idCliente) )";
         String query2 = "CREATE TABLE Producto ("+
                 "idProducto INT PRIMARY KEY,"+
                 "nombre varchar(45),"+
@@ -96,12 +101,15 @@ public class Convert {
                 "FOREIGN KEY (idFactura) REFERENCES Factura(idFactura) )";
         Connection con = DriverManager.getConnection(uri,user,password);
         con.setAutoCommit( false );
+        PreparedStatement ps0 = con.prepareStatement( query0 );
+        ps0.execute();
+        //con.commit();
         PreparedStatement ps = con.prepareStatement( query );
         ps.execute();
-        con.commit();
+        //con.commit();
         PreparedStatement ps1 = con.prepareStatement( query2 );
         ps1.execute();
-        con.commit();
+        //con.commit();
         PreparedStatement ps2 = con.prepareStatement( query1 );
         ps2.execute();
         con.commit();
