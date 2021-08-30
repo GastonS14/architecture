@@ -6,10 +6,6 @@ import DAO.DAOfactura_producto;
 import DAO.DAOproducto;
 import DataBase.Convert;
 import Entity.Cliente;
-import Entity.Factura;
-import Entity.FacturaProducto;
-import Entity.Producto;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -49,7 +45,7 @@ public class Main {
             daoFP.insert( fp1 );
         }
         */
-        System.out.println( daoC.getClienteInOrder() );
+        System.out.println( daoC.ejercicio4() );
     }
 
 }
