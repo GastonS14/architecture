@@ -1,4 +1,4 @@
-package DATA;
+package dto;
 
 public class DTOproducto {
     private final int idProducto;
@@ -19,9 +19,8 @@ public class DTOproducto {
 
     @Override
     public String toString() {
-        return "DTOproducto{" +
+        return "Producto: " +
                 "idProducto=" + idProducto +
-                ", recaudacion=" + recaudacion +
-                '}';
+                ", recaudacion=" + recaudacion ;
     }
 }

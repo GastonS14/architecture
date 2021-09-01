@@ -1,20 +1,21 @@
-package DATA;
+package dto;
 
 public class DTOcliente {
-    private int id;
+    private int idCliente;
     private String nombre;
     private String email;
-    private int valorFacturacion;
+    private Integer valorFacturacion;
 
+    /** Usado para devolver los resultados del ejercicio 4 */
     public DTOcliente(int id,String nombre, String email, int valor) {
-        this.id = id;
+        this.idCliente = id;
         this.nombre = nombre;
         this.email = email;
         this.valorFacturacion = valor;
     }
 
-    public int getId() {
-        return id;
+    public int getIdCliente() {
+        return idCliente;
     }
 
     public String getNombre() {
@@ -31,7 +32,10 @@ public class DTOcliente {
 
     @Override
     public String toString() {
-        return "DTOcliente: " +
-                "id=" + id ;
+        return " " +
+                "idCliente=" + idCliente +
+                ", nombre='" + nombre + '\'' +
+                ", email='" + email + '\'' +
+                ", valorFacturacion=" + valorFacturacion ;
     }
 }

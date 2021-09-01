@@ -1,29 +1,29 @@
-package DAO;
+package dao;
 
-import DATA.DTOproducto;
-import Entity.Producto;
+import dto.DTOproducto;
+import entity.Producto;
+import factory.Conexion;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import java.sql.*;
-
-import static DataBase.Convert.*;
 
 public class DAOproducto {
+    private Conexion conexion;
 
-    public DAOproducto() {
-
+    public DAOproducto( Conexion con ) {
+        this.conexion = con;
     }
 
     public void insert ( Producto p ) throws SQLException {
         String query = " INSERT INTO Producto VALUES (?,?,?)";
-        Connection con = DriverManager.getConnection( uri,user,password);
-        con.setAutoCommit( false );
-        PreparedStatement ps = con.prepareStatement( query );
+        PreparedStatement ps = this.conexion.getConnection().prepareStatement( query );
         ps.setInt( 1,p.getIdProducto() );
         ps.setString(2, p.getNombre());
         ps.setInt( 3,p.getValor());
         ps.execute();
-        con.commit();
-        con.close();
+        this.conexion.commit();
+        this.conexion.closeConnection();
     }
 
     public Producto getMasVendido ( ) throws SQLException{
@@ -32,31 +32,27 @@ public class DAOproducto {
                         "GROUP BY p.idProducto " +
                         "ORDER BY cantidad DESC " +
                         "LIMIT 1 ";
-        Connection con = DriverManager.getConnection( uri,user,password);
-        con.setAutoCommit( false );
-        PreparedStatement ps = con.prepareStatement(query);
+        PreparedStatement ps = this.conexion.getConnection().prepareStatement( query );
         ResultSet rs = ps.executeQuery();
         rs.next();
+        this.conexion.commit();
         DTOproducto resultado = new DTOproducto( rs.getInt("idProducto"), rs.getInt("cantidad"));
         Producto p = getProductoById( resultado.getIdProducto() );
-        con.commit();
-        con.close();
+        this.conexion.closeConnection();  //despues del commit connection closed xD
         return p;
     }
 
     public Producto getProductoById ( int id ) throws SQLException {
         String query = "SELECT * FROM Producto WHERE idProducto = ?";
-        Connection con = DriverManager.getConnection( uri,user,password);
-        con.setAutoCommit( false );
-        PreparedStatement ps = con.prepareStatement( query );
+        PreparedStatement ps = this.conexion.getConnection().prepareStatement( query );
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         rs.next();
-        con.commit();
         Producto p =  new Producto( rs.getInt("idProducto"),
                 rs.getString("nombre"),
                 rs.getInt("valor") );
-        con.close();
+        this.conexion.commit();
+        this.conexion.closeConnection();
         return p;
     }
 

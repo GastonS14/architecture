@@ -1,26 +1,28 @@
-package DAO;
+package dao;
 
-import DATA.DTOcliente;
-import Entity.Cliente;
+import dto.DTOcliente;
+import entity.Cliente;
+import factory.Conexion;
 import java.sql.*;
 import java.util.ArrayList;
-import static DataBase.Convert.*;
+
 
 public class DAOcliente {
+    private Conexion conexion;
 
-    public DAOcliente() { }
+    public DAOcliente( Conexion conexion ) {
+        this.conexion = conexion;
+    }
 
     public void insert ( Cliente c ) throws SQLException {
         String query = " INSERT INTO Cliente VALUES (?,?,?)";
-        Connection con = DriverManager.getConnection( uri,user,password);
-        con.setAutoCommit( false );
-        PreparedStatement ps = con.prepareStatement( query );
-        ps.setInt(1, c.getIdCliente());
-        ps.setString( 2,c.getNombre() );
-        ps.setString( 3,c.getEmail() );
+        PreparedStatement ps = this.conexion.getConnection().prepareStatement( query );
+        ps.setInt(1, c.getIdCliente() );
+        ps.setString( 2, c.getNombre() );
+        ps.setString( 3, c.getEmail() );
         ps.execute();
-        con.commit();
-        con.close();
+        this.conexion.commit();
+        this.conexion.closeConnection();
     }
 /*
     public ArrayList<Cliente> getClienteInOrder ( ) throws SQLException {
@@ -55,7 +57,6 @@ public class DAOcliente {
         con.close();
         return clientes;
     }
-    */
 
     private Cliente getClienteById ( int id ) throws SQLException {
         String query = "SELECT * FROM Cliente WHERE idCliente = (?)";
@@ -71,25 +72,23 @@ public class DAOcliente {
         con.commit();
         con.close();
         return c;
-
     }
+*/
 
     public ArrayList<DTOcliente> ejercicio4 ( ) throws SQLException {
-        Connection con = DriverManager.getConnection(uri,user,password);
         ArrayList<DTOcliente> resultado = new ArrayList<>();
-        String query = "select c.idCliente, c.nombre, c.email, result.valoresTotales\n" +
-                "from Cliente c JOIN\n" +
-                "                    ( select idCliente, SUM(valoresPorFacturas) as valoresTotales\n" +
-                "                    from ( select idFactura, SUM(valorPorFactura) as valoresPorFacturas\n" +
-                "                            from (\n" +
-                "                                select idFactura,fp.idProducto, cantidad * p.valor as valorPorFactura\n" +
-                "                                from Factura_Producto fp join Producto p on fp.idProducto = p.idProducto\n" +
-                "                                group by fp.idProducto, idFactura ) AS tableOne\n" +
-                "                            group by idFactura ) AS tableTwo JOIN Factura f ON f.idFactura = tableTwo.idFactura\n" +
-                "                    group by idCliente\n" +
-                "                    order by valoresTotales DESC ) AS result ON c.idCliente = result.idCliente";
-        con.setAutoCommit( false );
-        PreparedStatement ps = con.prepareStatement( query );
+        String query =  "select c.idCliente, c.nombre, c.email, result.valoresTotales\n" +
+                        "from Cliente c JOIN\n" +
+    "                    ( select idCliente, SUM(valoresPorFacturas) as valoresTotales\n" +
+    "                       from ( select idFactura, SUM(valorPorFactura) as valoresPorFacturas\n" +
+    "                               from (\n" +
+        "                                select idFactura,fp.idProducto, cantidad * p.valor as valorPorFactura\n" +
+            "                                from Factura_Producto fp join Producto p on fp.idProducto = p.idProducto\n" +
+            "                                group by fp.idProducto, idFactura ) AS tableOne\n" +
+    "                               group by idFactura ) AS tableTwo JOIN Factura f ON f.idFactura = tableTwo.idFactura\n" +
+    "                    group by idCliente\n" +
+    "                    order by valoresTotales DESC ) AS result ON c.idCliente = result.idCliente";
+        PreparedStatement ps = this.conexion.getConnection().prepareStatement( query );
         ResultSet rs = ps.executeQuery();
         while ( rs.next() ) {
         resultado.add( new  DTOcliente ( rs.getInt("idCliente"),
@@ -97,10 +96,9 @@ public class DAOcliente {
                         rs.getString("email"),
                         rs.getInt( "valoresTotales")) );
         }
-        con.commit();
-        con.close();
+        this.conexion.commit();
+        this.conexion.closeConnection();
         return resultado;
     }
-
 
 }
