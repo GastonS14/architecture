@@ -1,4 +1,4 @@
-package Helper;
+package helper;
 
 import entity.Cliente;
 import entity.Factura;

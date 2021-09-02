@@ -7,22 +7,18 @@ import factory.Factory;
 import java.sql.SQLException;
 
 public class BOproducto {
-    private DAOproducto daOproducto;
+    private DAOproducto daOproductoMySql;
 
     public BOproducto ( Factory f ) {
-        this.daOproducto = f.getDaoProducto();
+        this.daOproductoMySql = f.getDaoProducto();
     }
 
     public void save ( Producto p ) throws SQLException {
-        this.daOproducto.insert( p );
-    }
-
-    public Producto getProductById ( int id ) throws SQLException {
-        return this.daOproducto.getProductoById( id );
+        this.daOproductoMySql.insert( p );
     }
 
     public Producto getMasVendido ( ) throws SQLException {
-        return this.daOproducto.getMasVendido();
+        return this.daOproductoMySql.getMasVendido();
     }
 
 }

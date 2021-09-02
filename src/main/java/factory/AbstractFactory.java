@@ -1,9 +1,6 @@
 package factory;
 
-import dao.DAOcliente;
-import dao.DAOfactura;
-import dao.DAOfactura_producto;
-import dao.DAOproducto;
+import dao.*;
 
 /**
  * Ddefine los metodos para la creacion de los DAOs.

@@ -9,18 +9,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class BOcliente {
-    private DAOcliente daOcliente;
+    private DAOcliente daOclienteMySql;
 
     public BOcliente ( Factory f ) {
-        this.daOcliente = f.getDaoCliente();
+        this.daOclienteMySql = f.getDaoCliente();
     }
 
     public ArrayList<DTOcliente> clientesPorFacturacion () throws SQLException {
-        return this.daOcliente.ejercicio4();
+        return this.daOclienteMySql.clientesPorFacturacion();
     }
 
     public void save (Cliente c ) throws SQLException {
-        this.daOcliente.insert( c );
+        this.daOclienteMySql.insert( c );
     }
 
 }

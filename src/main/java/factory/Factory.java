@@ -1,9 +1,7 @@
 package factory;
 
-import dao.DAOcliente;
-import dao.DAOfactura;
-import dao.DAOfactura_producto;
-import dao.DAOproducto;
+import dao.*;
+
 import java.sql.SQLException;
 
 /**
@@ -62,19 +60,19 @@ public class Factory implements AbstractFactory {
      */
 
     public DAOcliente getDaoCliente ( ) {
-        return new DAOcliente( this.con );
+        return new DAOclienteMySql( this.con );
     }
 
     public DAOfactura getDaoFactura () {
-        return new DAOfactura( this.con );
+        return new DAOfacturaMySql( this.con );
     }
 
     public DAOproducto getDaoProducto () {
-        return new DAOproducto( this.con );
+        return new DAOproductoMySql( this.con );
     }
 
     public DAOfactura_producto getDaoFacProd () {
-        return new DAOfactura_producto( this.con );
+        return new DAOfactura_productoMySql( this.con );
     }
 
 }

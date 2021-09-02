@@ -1,25 +1,10 @@
 package dao;
 
 import entity.Factura;
-import factory.Conexion;
-import java.sql.PreparedStatement;
+
 import java.sql.SQLException;
 
-public class DAOfactura {
-    private Conexion conexion;
+public interface DAOfactura {
 
-    public DAOfactura ( Conexion con ){
-        this.conexion = con;
-    }
-
-    public void insert ( Factura f ) throws SQLException {
-        String query = " INSERT INTO Factura VALUES (?,?)";
-        PreparedStatement ps = this.conexion.getConnection().prepareStatement( query );
-        ps.setInt( 1,f.getIdFactura() );
-        ps.setInt( 2,f.getIdCliente() );
-        ps.execute();
-        this.conexion.commit();
-        this.conexion.closeConnection();
-    }
-
+    void insert ( Factura f ) throws SQLException;
 }
