@@ -1,64 +1,48 @@
 package main;
 
+import dataBase.EsquemaDB;
+import extensions.ResourceLoader;
 import helper.Parser;
 import businessObject.BOcliente;
 import businessObject.BOfactura;
 import businessObject.BOfactura_producto;
 import businessObject.BOproducto;
-import entity.Cliente;
-import entity.Factura;
-import entity.FacturaProducto;
-import entity.Producto;
 import factory.Factory;
-
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class Main {
+
     public static void main(String[] args) throws SQLException, IOException {
+        // Solo son aceptados los valores sql
         Factory f = Factory.getInstance( "sql" );
 
-        //EsquemaDB db = new EsquemaDB( f );
+        // Tables creation
+        EsquemaDB db = new EsquemaDB( f );
+        db.createTables();
 
-        BOcliente service_cliente = new BOcliente( f );
-        BOfactura service_factura = new BOfactura( f );
-        BOproducto service_prod = new BOproducto( f );
-        BOfactura_producto serv_fp = new BOfactura_producto( f );
+        // Servicios - Business Objects
+        BOcliente serviceCliente = new BOcliente( f );
+        BOfactura serviceFactura = new BOfactura( f );
+        BOproducto serviceProd = new BOproducto( f );
+        BOfactura_producto servFp = new BOfactura_producto( f );
 
+        // Read CSVs
+        String clientesPath = ResourceLoader.getString("clientes.csv");
+        String facturasPath = ResourceLoader.getString("facturas.csv");
+        String productosPath = ResourceLoader.getString("productos.csv");
+        String facturaProductosPath = ResourceLoader.getString("facturas-productos.csv");
 
-        ArrayList<Cliente> clientes = new ArrayList<>();
-        ArrayList<Factura> facturas = new ArrayList();
-        ArrayList<Producto> prod = new ArrayList<>();
-        ArrayList<FacturaProducto> fp = new ArrayList<>();
+        // Load entities
+        serviceCliente.saveAll( Parser.readClientes(clientesPath));
+        serviceFactura.saveAll( Parser.readFacturas(facturasPath));
+        serviceProd.saveAll( Parser.readProductos(productosPath));
+        servFp.saveAll( Parser.readFacturasProductos(facturaProductosPath));
 
-        //db.createTables();
-
-        clientes.addAll( Parser.createClientes("C:\\Users\\Usuario\\Documents\\IntelliJProjects\\IntegradorPractico1\\src\\main\\java\\DATA\\clientes.csv") );
-        for ( Cliente cli: clientes ) {
-            service_cliente.save( cli );
-        }
-
-        facturas.addAll( Parser.createFacturas("C:\\Users\\Usuario\\Documents\\IntelliJProjects\\IntegradorPractico1\\src\\main\\java\\DATA\\facturas.csv"));
-        for ( Factura factura : facturas ) {
-            service_factura.save( factura );
-        }
-
-        prod.addAll( Parser.createProductos("C:\\Users\\Usuario\\Documents\\IntelliJProjects\\IntegradorPractico1\\src\\main\\java\\DATA\\productos.csv") );
-        for ( Producto p : prod ) {
-            service_prod.save( p );
-        }
-
-        fp.addAll( Parser.createFacturasProductos("C:\\Users\\Usuario\\Documents\\IntelliJProjects\\IntegradorPractico1\\src\\main\\java\\DATA\\facturas-productos.csv") );
-        for ( FacturaProducto fp1: fp ) {
-            serv_fp.save( fp1 );
-        }
-
-        System.out.println( service_prod.getMasVendido() );
+        // Resolve problems
+        System.out.println( serviceProd.getMasVendido() );
         System.out.println( "\n");
-        System.out.println( service_cliente.clientesPorFacturacion() );
+        System.out.println( serviceCliente.clientesPorFacturacion() );
 
     }
-
-
 }

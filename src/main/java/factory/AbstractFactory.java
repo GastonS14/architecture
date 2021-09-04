@@ -3,7 +3,7 @@ package factory;
 import dao.*;
 
 /**
- * Ddefine los metodos para la creacion de los DAOs.
+ * Define los métodos para la creación de los DAOs.
  */
 
 interface AbstractFactory {

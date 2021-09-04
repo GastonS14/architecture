@@ -32,10 +32,11 @@ public class DTOcliente {
 
     @Override
     public String toString() {
-        return " " +
+        return
                 "idCliente=" + idCliente +
                 ", nombre='" + nombre + '\'' +
                 ", email='" + email + '\'' +
-                ", valorFacturacion=" + valorFacturacion ;
+                ", valorFacturacion=" + valorFacturacion
+                ;
     }
 }

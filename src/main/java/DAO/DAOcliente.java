@@ -2,13 +2,15 @@ package dao;
 
 import dto.DTOcliente;
 import entity.Cliente;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface DAOcliente {
 
-    void insert ( Cliente c ) throws SQLException;
+    Cliente insert (Cliente c ) throws SQLException;
+
     ArrayList<DTOcliente> clientesPorFacturacion() throws SQLException;
+
+    Cliente findClienteById(int id) throws SQLException;
 
 }

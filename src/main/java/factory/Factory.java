@@ -10,9 +10,7 @@ import java.sql.SQLException;
  */
 
 public class Factory implements AbstractFactory {
-    private String tecnologia;
-    private String driver;
-    private String uri;
+    private final String tecnologia;
     private Conexion con;
     private static Factory f;
 
@@ -22,24 +20,26 @@ public class Factory implements AbstractFactory {
 
     /**
      * Dependiendo de la DB a utilizar, se setea el driver y la uri de la conexion.
-     * @throws SQLException
+     * @throws SQLException si la conexion falla
      */
     private void setConexion ( ) throws SQLException {
+        String driver;
+        String uri;
         if ( this.tecnologia.equalsIgnoreCase( "sql" ) ) {
-            this.driver = "com.mysql.cj.jdbc.Driver";
-            this.uri = "jdbc:mysql://localhost:3306/example_DB";
+            driver = "com.mysql.cj.jdbc.Driver";
+            uri = "jdbc:mysql://localhost:3306/example_DB";
         } else {
-            this.driver = "org.apache.derby.jdbc.EmbeddedDriver";
-            this.uri = "jdbc:derby:MyDerbyDB;create=true";
+            driver = "org.apache.derby.jdbc.EmbeddedDriver";
+            uri = "jdbc:derby:MyDerbyDB;create=true";
         }
-        con = Conexion.getInstance( this.driver, this.uri );
+        con = Conexion.getInstance(driver, uri);
     }
 
     /**
-     * Solo a travez de este metodo se obtiene una instancia de factory
-     * @param tecnologia
-     * @return
-     * @throws SQLException
+     * Solo a traves de este metodo se obtiene una instancia de factory
+     * @param tecnologia usada para determinar la tecnologia de base de datos a utilizarse
+     * @return instancia del factory
+     * @throws SQLException si la conexion falla
      */
     public static Factory getInstance ( String tecnologia ) throws SQLException {
         if ( f == null ) {
@@ -56,9 +56,8 @@ public class Factory implements AbstractFactory {
     /** Creacion de los DAO segun la tecnologia.
      *  En este caso solo se usara MySql, pero de usarse otra DB, se debera crear
      *  una clase abstracta para cada DAO y sus clases concretas por cada DB a usar.
-     * @return
+     * @return instancia de la DaoCliente
      */
-
     public DAOcliente getDaoCliente ( ) {
         return new DAOclienteMySql( this.con );
     }

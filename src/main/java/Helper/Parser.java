@@ -13,55 +13,53 @@ import java.util.ArrayList;
 
 public final class Parser {
 
-    private Parser (){}
-
-    public static final ArrayList<Producto> createProductos (String path ) throws IOException {
-        ArrayList<Producto> retorno = new ArrayList();
+    public static ArrayList<Producto> readProductos(String path ) throws IOException {
+        ArrayList<Producto> listaProductos = new ArrayList<>();
         CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new FileReader(path));
         for (CSVRecord row : parser) {
             int idProducto = Integer.parseInt(row.get("idProducto"));
             int valor = Integer.parseInt(row.get("valor"));
             String aux = row.get("nombre");
             Producto p = new Producto(idProducto, aux, valor);
-            retorno.add(p);
+            listaProductos.add(p);
         }
-        return retorno;
+        return listaProductos;
     }
 
-    public static final ArrayList<Cliente> createClientes (String path ) throws IOException {
-        ArrayList<Cliente> retorno = new ArrayList();
+    public static ArrayList<Cliente> readClientes(String path ) throws IOException {
+        ArrayList<Cliente> listaClientes = new ArrayList<>();
         CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new FileReader(path));
         for (CSVRecord row : parser) {
             int idCliente = Integer.parseInt(row.get("idCliente"));
             Cliente c = new Cliente(idCliente, row.get("nombre"), row.get("email"));
-            retorno.add( c );
+            listaClientes.add( c );
         }
-        return retorno;
+        return listaClientes;
     }
 
-    public static final ArrayList<Factura> createFacturas (String path ) throws IOException {
-        ArrayList<Factura> retorno = new ArrayList();
+    public static ArrayList<Factura> readFacturas(String path ) throws IOException {
+        ArrayList<Factura> listaFacturas = new ArrayList<>();
         CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new FileReader( path ) );
         for( CSVRecord row:parser ) {
             int idFactura = Integer.parseInt( row.get("idFactura") );
             int idCliente = Integer.parseInt( row.get("idCliente") );
             Factura p = new Factura( idFactura, idCliente );
-            retorno.add( p );
+            listaFacturas.add( p );
         }
-        return retorno;
+        return listaFacturas;
     }
 
-    public static final ArrayList<FacturaProducto> createFacturasProductos (String path ) throws IOException {
-        ArrayList<FacturaProducto> retorno = new ArrayList();
+    public static ArrayList<FacturaProducto> readFacturasProductos(String path ) throws IOException {
+        ArrayList<FacturaProducto> listaFacturaProductos = new ArrayList<>();
         CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new FileReader( path ) );
         for( CSVRecord row:parser ) {
             int idFactura = Integer.parseInt( row.get("idFactura") );
             int idProducto = Integer.parseInt( row.get("idProducto") );
             int cantidad = Integer.parseInt( row.get("cantidad") );
             FacturaProducto fp = new FacturaProducto( idFactura, idProducto, cantidad );
-            retorno.add( fp );
+            listaFacturaProductos.add( fp );
         }
-        return retorno;
+        return listaFacturaProductos;
     }
 
 }

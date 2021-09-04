@@ -1,10 +1,10 @@
 package entity;
 
 public class Cliente {
-    private int idCliente;
+
+    private final int idCliente;
     private String nombre;
     private String email;
-
 
     public Cliente (int idCliente, String nombre, String email ) {
         this.idCliente = idCliente;
@@ -14,10 +14,6 @@ public class Cliente {
 
     public int getIdCliente() {
         return idCliente;
-    }
-
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
     }
 
     public String getNombre() {

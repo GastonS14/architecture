@@ -7,9 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 public class DAOproductoMySql implements DAOproducto{
-    private Conexion conexion;
+
+    private final Conexion conexion;
 
     public DAOproductoMySql(Conexion con ) {
         this.conexion = con;
@@ -27,11 +27,12 @@ public class DAOproductoMySql implements DAOproducto{
     }
 
     public Producto getMasVendido ( ) throws SQLException{
-        String query = "select p.idProducto AS idProducto, SUM(cantidad) * p.valor AS cantidad " +
-                        "FROM Producto p JOIN Factura_Producto FP on p.idProducto = FP.idProducto " +
-                        "GROUP BY p.idProducto " +
-                        "ORDER BY cantidad DESC " +
-                        "LIMIT 1 ";
+        String query = """
+                        select p.idProducto AS idProducto, SUM(cantidad) * p.valor AS cantidad
+                        FROM Producto p JOIN Factura_Producto FP on p.idProducto = FP.idProducto
+                        GROUP BY p.idProducto
+                        ORDER BY cantidad DESC
+                        LIMIT 1 """.trim();
         PreparedStatement ps = this.conexion.getConnection().prepareStatement( query );
         ResultSet rs = ps.executeQuery();
         rs.next();
@@ -42,18 +43,29 @@ public class DAOproductoMySql implements DAOproducto{
         return p;
     }
 
-    public Producto getProductoById ( int id ) throws SQLException {
+    public Producto getProductoById ( int idProducto ) throws SQLException {
         String query = "SELECT * FROM Producto WHERE idProducto = ?";
         PreparedStatement ps = this.conexion.getConnection().prepareStatement( query );
-        ps.setInt(1,id);
+        ps.setInt(1, idProducto);
         ResultSet rs = ps.executeQuery();
         rs.next();
-        Producto p =  new Producto( rs.getInt("idProducto"),
-                rs.getString("nombre"),
-                rs.getInt("valor") );
+        Producto producto = productoMapper(rs);
         this.conexion.commit();
         this.conexion.closeConnection();
-        return p;
+        return producto;
+    }
+
+    private Producto productoMapper(ResultSet rs) {
+        try {
+            return new Producto(
+                    rs.getInt("idProducto"),
+                    rs.getString("nombre"),
+                    rs.getInt("valor")
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }
